@@ -1,8 +1,25 @@
 const express = require("express");
 const cors = require("cors");
-
+const axios = require("axios");
 const app = express();
+
 app.use(cors());
+
+app.get("/road", async (req, res) => {
+  try {
+    const response = await axios.get(
+      "https://lereacteur-bootcamp-api.herokuapp.com/api/deliveroo/menu/paris/3eme-temple/sub-arc-subway-rambuteau?day=today&geohash=u09wj8rk5bqr&time=ASAP",
+      {
+        headers: {
+          Authorization: req.headers.authorization,
+        },
+      }
+    );
+    return res.status(200).json(response.data);
+  } catch (error) {
+    return res.status(404).json({ message: "Cette route n'existe pas" });
+  }
+});
 
 app.get("/", (req, res) => {
   return res.json({
